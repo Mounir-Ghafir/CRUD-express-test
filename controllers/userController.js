@@ -1,8 +1,9 @@
+// GET /users - Get all users
 const getAllUsers = (req, res) => {
     res.json(global.users);
 };
 
-
+// GET /users/:id - Get a single user
 const getUserById = (req, res) => {
     const user = global.users.find(u => u.id === req.params.id);
     
@@ -13,7 +14,7 @@ const getUserById = (req, res) => {
     res.json(user);
 };
 
-
+// POST /users - Create a user
 const createUser = (req, res) => {
     const { name, email, phone } = req.body;
     
@@ -28,7 +29,7 @@ const createUser = (req, res) => {
     res.status(201).json(newUser);
 };
 
-
+// PUT /users/:id - Update a user
 const updateUser = (req, res) => {
     const user = global.users.find(u => u.id === req.params.id);
     
@@ -44,12 +45,12 @@ const updateUser = (req, res) => {
     res.json(user);
 };
 
-
+// DELETE /users/:id - Delete a user
 const deleteUser = (req, res) => {
     const index = global.users.findIndex(u => u.id === req.params.id);
     
     if (index === -1) {
-        return res.status(404).json({ error: 'User not found'});
+        return res.status(404).json({ error: 'User not found' });
     }
     
     const deleted = global.users.splice(index, 1)[0];
