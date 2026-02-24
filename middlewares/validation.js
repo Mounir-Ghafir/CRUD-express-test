@@ -1,4 +1,3 @@
-// Validation pour les utilisateurs
 const validateUser = (req, res, next) => {
     const { name, email, phone } = req.body;
     
