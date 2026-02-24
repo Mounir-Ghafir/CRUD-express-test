@@ -1,58 +1,30 @@
 const express = require('express');
-const bodyParser = require('body-parser');
-const fs = require('fs'); // For file operations
-
-const userRoutes = require('./routes/users');
-const walletRoutes = require('./routes/wallets');
+const userRoutes = require('./routes/userRoutes');
+const walletRoutes = require('./routes/walletRoutes');
 
 const app = express();
-const PORT = 3000;
+app.use(express.json());
 
-// Create data folder and files if they don't exist
-if (!fs.existsSync('./data')) {
-  fs.mkdirSync('./data');
-}
 
-// Initialize JSON files if they don't exist
-const initFile = (filename, defaultData) => {
-  if (!fs.existsSync(`./data/${filename}`)) {
-    fs.writeFileSync(`./data/${filename}`, JSON.stringify(defaultData, null, 2));
-  }
-};
+global.users = [];
+global.wallets = [];
+global.generateId = () => Date.now().toString();
 
-initFile('users.json', []);
-initFile('wallets.json', []);
-initFile('transactions.json', []);
 
-app.use(bodyParser.json());
-
-// Logger middleware
-app.use((req, res, next) => {
-  console.log(`📢 ${req.method} ${req.url}`);
-  next();
-});
-
-// Routes
 app.use('/users', userRoutes);
 app.use('/wallets', walletRoutes);
 
-// Home route
+
 app.get('/', (req, res) => {
-  res.json({
-    message: "Welcome to the Digital Wallet API 💰",
-    features: {
-      users: "/users - Manage users",
-      wallets: "/wallets - Manage wallets (with pagination & filtering)",
-      transactions: "Automatically recorded in transactions.json"
-    }
-  });
+    res.json({ message: 'Welcome to the Wallet API!' });
 });
 
-// 404 handler
-app.use((req, res) => {
-  res.status(404).json({ error: "Route not found" });
+
+app.use('*', (req, res) => {
+    res.status(404).json({ error: 'Route not found' });
 });
 
+const PORT = 3000;
 app.listen(PORT, () => {
-  console.log(`✅ Server started on http://localhost:${PORT}`);
+    console.log(`Server running on http://localhost:${PORT}`);
 });
