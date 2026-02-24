@@ -1,7 +1,7 @@
 {
   "name": "wallet-api",
   "version": "1.0.0",
-  "description": "API de portefeuille simple",
+  "description": "Simple wallet API",
   "main": "server.js",
   "scripts": {
     "start": "node server.js"
